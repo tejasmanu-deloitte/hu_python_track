@@ -12,10 +12,6 @@ class StringClass:
         return characters
 
 
-obj1 = StringClass("12314532")
-print(obj1.strlen())
-print(obj1.str_to_lis())
-
 
 class PairsPossible(StringClass):
 
@@ -26,7 +22,7 @@ class PairsPossible(StringClass):
         for element in range(0, StringClass.strlen(self), 1):
             for next_element in range(0, StringClass.strlen(self), 1):
                 if element != next_element:
-                    lis2.append((lis[element], lis[next_element]))
+                    lis2.append(lis[element] + lis[next_element])
 
         return lis2
 
@@ -34,12 +30,9 @@ class PairsPossible(StringClass):
         print(*self.possible_pairs())
 
 
-obj2 = PairsPossible("1357935")
-print(obj2.possible_pairs())
-print(obj2.print_possible_pair())
 
 
-class SearchCommonElements():
+class SearchCommonElements:
 
     def __init__(self, a, b):
         self.StringClass_string = a
@@ -50,11 +43,51 @@ class SearchCommonElements():
         dict= {}
 
         for ele in self.StringClass_string:
-            if ele in dict:
-                continue
-            else:
-                dict[ele] = 1
+            if (ele in self.PossiblePair_string):
+                if ele in dict:
+                    continue
+                else:
+                    dict[ele] = 1
 
-        for element1 in self.PossiblePair_string:
-            if element1 in dict:
-                self.common_list.append(element1)
+        for key in dict:
+            self.common_list.append(key)
+
+        return self.common_list
+
+
+
+class EqualSumPairs():
+
+    def print_equal_sum_pairs(self, lis):
+
+        dict = {}
+
+        for pair in lis:
+            pairs_list = list(pair)
+            sum = 0
+            for num in pairs_list:
+                sum = sum+int(num)
+
+            if sum in dict:
+                dict[sum] = dict[sum]+1
+            else:
+                dict[sum] = 1
+
+
+obj1 = StringClass("12314532")
+print(obj1.strlen())
+print(obj1.str_to_lis())
+
+
+
+obj2 = PairsPossible("1357935")
+print(obj2.possible_pairs())
+print(obj2.print_possible_pair())
+lis = obj2.possible_pairs()
+
+
+obj3 = SearchCommonElements(obj1.str1,obj2.str1)
+print(obj3.find_common())
+
+obj4 = EqualSumPairs()
+obj4.print_equal_sum_pairs(lis)

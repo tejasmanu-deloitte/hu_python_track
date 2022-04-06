@@ -4,9 +4,11 @@ class FormulaError(Exception):
 
 while True:
     opr = input("Enter the operation or enter quit to exit:")
+
+    lis = [i for i in opr.split()]
+
     if opr.lower() == "quit":
         break
-    lis = list(opr)
 
     # Check if there are 3 elements in the expression
     if len(lis) != 3:

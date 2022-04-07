@@ -24,8 +24,11 @@ def add_edit_new_movie():
     director = input("Director :")
     admin_rating = input("Admin Rating :")
     lang = input("Language :")
-    timing = input("Timing :")
-    no_of_shows = input("Length :")
+    timing_string = input("Timing :")
+    timing = list(timing_string.split(","))
+    # no_of_shows = input("Number of shows :")
+    no_of_shows = len(timing)
+    print("Number of shows in a day:", no_of_shows)
     first_show = input("First Show :")
     interval_time = input("Interval Time :")
     gap_btw_show = input("Gap Between Shows :")
@@ -60,6 +63,12 @@ def user_display(title):
           "Admin :", lis[4], "\n"
           "Timings :", lis[5], "\n"
           "User Rating :", lis[6])
+
+    func = int(input("1. Book Tickets \n"
+                     "2. Cancel Tickets \n"
+                     "3. Give User Rating"))
+
+    return func
 
 def book_ticket(title):
     lis = list(movie_file[title])

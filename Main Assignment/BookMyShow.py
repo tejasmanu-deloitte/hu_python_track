@@ -37,11 +37,16 @@ if admin_user1 == "admin":
 
     if opt == 1:
         print("******Welcome Admin*******")
-        Base.add_edit_new_movie()
+        title,movie_details = Base.add_edit_new_movie()
+        Base.movie_file[title] = movie_details
+        Base.movie_file.to_csv("movies.csv")
 
     elif opt == 2:
         print("******Welcome Admin*******")
         Base.add_edit_new_movie()
+        title, movie_details = Base.add_edit_new_movie()
+        Base.movie_file[title] = movie_details
+        Base.movie_file.to_csv("movies.csv")
 
     elif opt == 3:
         print("******Welcome Admin*******")

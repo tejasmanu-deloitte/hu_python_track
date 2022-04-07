@@ -41,14 +41,16 @@ def add_edit_new_movie():
 
 
 def login_func(user, password):
-    dictionary = dict()
-    dictionary["admin"] = "password"
-    dictionary["user"] = "pass"
 
-    if dictionary[user] == password:
-        return "admin"
-    elif (user in dictionary) and (dictionary[user] == password):
+    admins = list(admin_detail.columns)
+    users = list(user_detail.columns)
+
+    if (user in users) and (user_detail[user][3] == password):
         return "user"
+
+    elif (user in admins) and (admin_detail[user][0] == password):
+        return "admin"
+
     else:
         return "invalid"
 

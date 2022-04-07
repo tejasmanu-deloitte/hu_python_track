@@ -1,8 +1,6 @@
 import pandas as pd
 
 import Base
-admin_user = "user"
-admin_user1 = "admin"
 
 print("""
 ******Welcome to BookMyShow******
@@ -20,12 +18,17 @@ if num == 1:
 
 if num == 2:
     print("****Create new Account***** ")
-    Base.register_func()
+    name, user_details = Base.register_func()
+    Base.user_detail[name] = user_details
 
 if num == 3:
     exit(0)
 
-if admin_user1 == "admin":
+if admin_user == "invalid":
+    print("Invalid username or password")
+    # continue
+
+if admin_user == "admin":
     print("1. Admin  Login:")
     print("******Welcome Admin*******")
     print("1. Add new Movie Info \n"
@@ -37,16 +40,16 @@ if admin_user1 == "admin":
 
     if opt == 1:
         print("******Welcome Admin*******")
-        title,movie_details = Base.add_edit_new_movie()
+        title, movie_details = Base.add_edit_new_movie()
         Base.movie_file[title] = movie_details
-        Base.movie_file.to_csv("movies.csv")
+        Base.movie_file.to_csv("movies.csv",index=False)
 
     elif opt == 2:
         print("******Welcome Admin*******")
         Base.add_edit_new_movie()
         title, movie_details = Base.add_edit_new_movie()
         Base.movie_file[title] = movie_details
-        Base.movie_file.to_csv("movies.csv")
+        Base.movie_file.to_csv("movies.csv",index=False)
 
     elif opt == 3:
         print("******Welcome Admin*******")
@@ -61,8 +64,7 @@ if admin_user == "user":
     for i in range(1, len(movies), 1):
         print(i, ". ", movies[i])
 
-    print((i+1), ". ", "Logout")
+    print((i + 1), ". ", "Logout")
 
     movie = input("Enter movie: ")
     func = Base.user_display(movies[movie])
-

@@ -164,7 +164,7 @@ def book_ticket(title, user):
     user_detail[user][4] = [opt, seats]
     user_detail.to_csv("user.csv", index=False)
 
-    print("Ticket Booked successfully")
+    print("Tickets Booked successfully")
 
 
 def cancel_ticket(title,user):
@@ -179,6 +179,7 @@ def cancel_ticket(title,user):
     opt = user_booking[0]
 
     remaining_seat = capacity[opt - 1][2]
+    print("Number of Booked Seats :", user_booking[1])
     seats = int(input("Number of seats you want to cancel "))
 
     after_cancelling = int(remaining_seat) + seats

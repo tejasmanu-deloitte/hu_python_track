@@ -94,7 +94,7 @@ while exit_val == False:
                 continue
 
             if len(movies) > 1:
-                for i in range(1, len(movies), 1):
+                for i in range(0, len(movies), 1):
                     print(i, ". ", movies[i])
 
                 print((i + 1), ". ", "Logout")

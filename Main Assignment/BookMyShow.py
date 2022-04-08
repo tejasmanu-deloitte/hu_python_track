@@ -110,7 +110,8 @@ while exit_val == False:
             title = movies[movie - 1]
 
             if func == 1:
-                pass
+                Base.book_ticket(title)
+                login_status = False
 
             elif func == 2:
                 pass

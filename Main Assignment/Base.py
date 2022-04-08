@@ -1,4 +1,5 @@
 import pandas as pd
+
 try:
     movie_file = pd.read_csv("movies.csv")
 except Exception:
@@ -25,6 +26,7 @@ def register_func():
     lis = [email, phone, age, password]
     return name, lis
 
+
 def edit_movie(title):
     # title = input("Title [{}] :".format(title))
     print("Title :", title)
@@ -44,13 +46,17 @@ def edit_movie(title):
     gap_btw_show = input("Gap Between Shows [{}] :".format(movie_file[title][10]))
     capacity = input("Capacity [{}] :".format(movie_file[title][11]))
     rating = float(movie_file[title][12])
+    seats_available = movie_file[title][13]
 
     lis = [genre, duration, cast, director, admin_rating, lang, timing, no_of_shows, first_show, interval_time,
-           gap_btw_show, capacity,rating]
+           gap_btw_show, capacity, rating, seats_available]
 
     return title, lis
 
+
 def add_new_movie():
+    seats_available = list()
+
     title = input("Title :")
     genre = input("Genre :")
     duration = input("Length :")
@@ -69,14 +75,16 @@ def add_new_movie():
     capacity = input("Capacity :")
     rating = 0.0
 
+    for i in range(len(timing)):
+        seats_available.append([i + 1, timing[i], int(capacity)])
+
     lis = [genre, duration, cast, director, admin_rating, lang, timing, no_of_shows, first_show, interval_time,
-           gap_btw_show, capacity, rating]
+           gap_btw_show, capacity, rating, seats_available]
 
     return title, lis
 
 
 def login_func(user, password):
-
     admins = list(admin_detail.columns)
     users = list(user_detail.columns)
 
@@ -93,14 +101,15 @@ def login_func(user, password):
 def user_display(title):
     lis = list(movie_file[title])
 
-    print("Title :", title , "\n"
-          "Genre :", lis[0], "\n"
-          "Length", lis[1], "\n"
-          "Cast :", lis[2], "\n"
-          "Director :", lis[3], "\n"
-          "Admin :", lis[4], "\n"
-          "Timings :", lis[5], "\n"
-          "User Rating :", lis[12])
+    print("Title :", title, "\n"
+                            "Genre :", lis[0], "\n"
+                                               "Length", lis[1], "\n"
+                                                                 "Cast :", lis[2], "\n"
+                                                                                   "Director :", lis[3], "\n"
+                                                                                                         "Admin :",
+          lis[4], "\n"
+                  "Timings :", lis[5], "\n"
+                                       "User Rating :", lis[12])
 
     print("1. Book Tickets \n"
           "2. Cancel Tickets \n"
@@ -111,32 +120,59 @@ def user_display(title):
 
 
 def movie_rating(title):
-
     rating = float(input("Enter Movie Rating out of 10 :"))
 
     if rating >= 0 or rating <= 10:
         if float(movie_file[title][12]) != 0.0:
-            movie_file[title][12] = (float(movie_file[title][12]) + rating)/2
+            movie_file[title][12] = (float(movie_file[title][12]) + rating) / 2
         else:
             movie_file[title][12] = float(rating)
 
-        movie_file.to_csv("movies.csv",index=False)
+        movie_file.to_csv("movies.csv", index=False)
     else:
         print("Enter valid rating")
 
 
-# def ratings():
-#     movies = ("RRR", "83", "RX100")
-#     for movie in movies:
-#         print("Rating For Movie:", movie)
-#         for i in range(len(movies)):
-#             rating = int(input("Enter Movie rating: "))
-#             if rating < 1 or rating > 10:
-#                 print("That's not a Valid number")
-#                 continue
-#             break
-
-
 def book_ticket(title):
-    lis = list(movie_file[title])
+    capacity = movie_file[title][13]
+
+    for i in capacity:
+        print(i[0], " :", i[1])
+
+    opt = int(input("Select timings :"))
+    print("Timing: ", capacity[opt - 1][1])
+    print("Remaining Seats", capacity[opt - 1][2])
+    remaining_seat = capacity[opt - 1][2]
+    seats = int(input("Enter Number of Seats: "))
+
+    after_booking = int(remaining_seat) - seats
+
+    capacity[opt - 1][2] = after_booking
+
+    movie_file[title][13] = capacity
+    movie_file.to_csv("movie", index=False)
+
+
+def cancel_ticket(title):
+    capacity = movie_file[title][13]
+
+    for i in capacity:
+        print(i[0], " :", i[1])
+
+    opt = int(input("Select timings :"))
+    print("Timing: ", capacity[opt - 1][1])
+    print("Remaining Seats", capacity[opt - 1][2])
+    remaining_seat = capacity[opt - 1][2]
+    seats = int(input("Enter Number of Seats: "))
+
+    after_booking = int(remaining_seat) - seats
+
+    capacity[opt - 1][2] = after_booking
+
+    movie_file[title][13] = capacity
+    movie_file.to_csv("movie", index=False)
+
+
+# def cancel(selfself, seatNo):
+#     pass
 

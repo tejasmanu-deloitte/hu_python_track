@@ -1,8 +1,18 @@
 import pandas as pd
+try:
+    movie_file = pd.read_csv("movies.csv")
+except Exception:
+    movie_file = pd.DataFrame()
 
-movie_file = pd.read_csv("movies.csv")
-admin_detail = pd.read_csv("admin.csv")
-user_detail = pd.read_csv("user.csv")
+try:
+    admin_detail = pd.read_csv("admin.csv")
+except Exception:
+    admin_detail = pd.DataFrame()
+
+try:
+    user_detail = pd.read_csv("user.csv")
+except Exception:
+    user_detail = pd.DataFrame()
 
 
 def register_func():
@@ -15,8 +25,32 @@ def register_func():
     lis = [email, phone, age, password]
     return name, lis
 
+def edit_movie(title):
+    # title = input("Title [{}] :".format(title))
+    print("Title :", title)
+    genre = input("Genre [{}] :".format(movie_file[title][0]))
+    duration = input("Length [{}] :".format(movie_file[title][1]))
+    cast = input("Cast [{}] :".format(movie_file[title][2]))
+    director = input("Director [{}] :".format(movie_file[title][3]))
+    admin_rating = input("Admin Rating [{}] :".format(movie_file[title][4]))
+    lang = input("Language [{}] :".format(movie_file[title][5]))
+    timing_string = input("Timing [{}] :".format(movie_file[title][6]))
+    timing = list(timing_string.split(","))
+    # no_of_shows = input("Number of shows :")
+    no_of_shows = len(timing)
+    print("Number of shows in a day :", no_of_shows)
+    first_show = input("First Show [{}] :".format(movie_file[title][8]))
+    interval_time = input("Interval Time [{}] :".format(movie_file[title][9]))
+    gap_btw_show = input("Gap Between Shows [{}] :".format(movie_file[title][10]))
+    capacity = input("Capacity [{}] :".format(movie_file[title][11]))
+    rating = float(movie_file[title][12])
 
-def add_edit_new_movie():
+    lis = [genre, duration, cast, director, admin_rating, lang, timing, no_of_shows, first_show, interval_time,
+           gap_btw_show, capacity,rating]
+
+    return title, lis
+
+def add_new_movie():
     title = input("Title :")
     genre = input("Genre :")
     duration = input("Length :")
@@ -33,9 +67,10 @@ def add_edit_new_movie():
     interval_time = input("Interval Time :")
     gap_btw_show = input("Gap Between Shows :")
     capacity = input("Capacity :")
+    rating = 0.0
 
     lis = [genre, duration, cast, director, admin_rating, lang, timing, no_of_shows, first_show, interval_time,
-           gap_btw_show, capacity]
+           gap_btw_show, capacity, rating]
 
     return title, lis
 
@@ -54,6 +89,7 @@ def login_func(user, password):
     else:
         return "invalid"
 
+
 def user_display(title):
     lis = list(movie_file[title])
 
@@ -64,24 +100,42 @@ def user_display(title):
           "Director :", lis[3], "\n"
           "Admin :", lis[4], "\n"
           "Timings :", lis[5], "\n"
-          "User Rating :", lis[6])
+          "User Rating :", lis[12])
 
-    func = int(input("1. Book Tickets \n"
-                     "2. Cancel Tickets \n"
-                     "3. Give User Rating"))
+    print("1. Book Tickets \n"
+          "2. Cancel Tickets \n"
+          "3. Give User Rating\n")
+    func = int(input("Enter the option"))
 
     return func
 
-def ratings():
-    movies = ("RRR", "83", "RX100")
-    for movie in movies:
-        print("Rating For Movie:", movie)
-        for i in range(len(movies)):
-            rating = int(input("Enter Movie rating: "))
-            if rating < 1 or rating > 10:
-                print("That's not a Valid number")
-                continue
-            break
+
+def movie_rating(title):
+
+    rating = float(input("Enter Movie Rating out of 10 :"))
+
+    if rating >= 0 or rating <= 10:
+        if float(movie_file[title][12]) != 0.0:
+            movie_file[title][12] = (float(movie_file[title][12]) + rating)/2
+        else:
+            movie_file[title][12] = float(rating)
+
+        movie_file.to_csv("movies.csv",index=False)
+    else:
+        print("Enter valid rating")
+
+
+# def ratings():
+#     movies = ("RRR", "83", "RX100")
+#     for movie in movies:
+#         print("Rating For Movie:", movie)
+#         for i in range(len(movies)):
+#             rating = int(input("Enter Movie rating: "))
+#             if rating < 1 or rating > 10:
+#                 print("That's not a Valid number")
+#                 continue
+#             break
+
 
 def book_ticket(title):
     lis = list(movie_file[title])

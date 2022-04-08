@@ -104,17 +104,20 @@ while exit_val == False:
                 print("2 . Logout \n")
 
             movie = int(input("Enter movie: "))
+            if movie == 2:
+                login_status = False
             print(movies[movie - 1])
             func = Base.user_display(movies[movie - 1])
 
             title = movies[movie - 1]
 
             if func == 1:
-                Base.book_ticket(title)
+                Base.book_ticket(title,user)
                 login_status = False
 
             elif func == 2:
-                pass
+                Base.cancel_ticket(title, user)
+                login_status = False
 
             elif func == 3:
                 print("******Welcome User1*******")

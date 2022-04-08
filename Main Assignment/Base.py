@@ -1,5 +1,5 @@
 import pandas as pd
-
+import ast
 try:
     movie_file = pd.read_csv("movies.csv")
 except Exception:
@@ -22,8 +22,9 @@ def register_func():
     phone = input("Phone :")
     age = input("Age :")
     password = input("Password :")
+    tickets_booked = list()
 
-    lis = [email, phone, age, password]
+    lis = [email, phone, age, password, tickets_booked]
     return name, lis
 
 
@@ -133,13 +134,21 @@ def movie_rating(title):
         print("Enter valid rating")
 
 
-def book_ticket(title):
-    capacity = movie_file[title][13]
+def book_ticket(title, user):
+    movie_file = pd.read_csv("movies.csv")
+    user_detail = pd.read_csv("user.csv")
+    capacity2 = movie_file[title][13]
 
-    for i in capacity:
-        print(i[0], " :", i[1])
+    capacity = ast.literal_eval(capacity2)
 
-    opt = int(input("Select timings :"))
+    if len(capacity) > 1:
+        for i in capacity:
+            print(i[0], " :", i[1])
+
+        opt = int(input("Select timings :"))
+
+    else:
+        opt = 1
     print("Timing: ", capacity[opt - 1][1])
     print("Remaining Seats", capacity[opt - 1][2])
     remaining_seat = capacity[opt - 1][2]
@@ -150,29 +159,34 @@ def book_ticket(title):
     capacity[opt - 1][2] = after_booking
 
     movie_file[title][13] = capacity
-    movie_file.to_csv("movie", index=False)
+    movie_file.to_csv("movies.csv", index=False)
+
+    user_detail[user][4] = [opt, seats]
+    user_detail.to_csv("user.csv", index=False)
+
+    print("Ticket Booked successfully")
 
 
-def cancel_ticket(title):
-    capacity = movie_file[title][13]
+def cancel_ticket(title,user):
 
-    for i in capacity:
-        print(i[0], " :", i[1])
+    movie_file = pd.read_csv("movies.csv")
+    user_detail = pd.read_csv("user.csv")
 
-    opt = int(input("Select timings :"))
-    print("Timing: ", capacity[opt - 1][1])
-    print("Remaining Seats", capacity[opt - 1][2])
+    user_booking = ast.literal_eval(user_detail[user][4])
+
+    capacity = ast.literal_eval(movie_file[title][13])
+
+    opt = user_booking[0]
+
     remaining_seat = capacity[opt - 1][2]
-    seats = int(input("Enter Number of Seats: "))
+    seats = int(input("Number of seats you want to cancel "))
 
-    after_booking = int(remaining_seat) - seats
+    after_cancelling = int(remaining_seat) + seats
 
-    capacity[opt - 1][2] = after_booking
+    capacity[opt - 1][2] = after_cancelling
+    user_booking[1] = user_booking[1]-seats
 
     movie_file[title][13] = capacity
-    movie_file.to_csv("movie", index=False)
-
-
-# def cancel(selfself, seatNo):
-#     pass
-
+    user_detail[user][4] = user_booking
+    movie_file.to_csv("movies.csv", index=False)
+    user_detail.to_csv("user.csv", index=False)
